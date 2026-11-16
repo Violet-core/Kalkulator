@@ -1,52 +1,47 @@
 ﻿using System;
 using System.Globalization;
 
-namespace DiscountCalculator
+namespace CalculatorApp
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // Чтобы десятичный разделитель был точкой/запятой по локали
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 
             while (true)
             {
-                Console.WriteLine("\n=== Калькулятор скидок ===");
+                Console.WriteLine("\n===== МЕНЮ =====");
+                Console.WriteLine("1. Обычный калькулятор");
+                Console.WriteLine("2. Расчёт скидки");     // ← новая строка
+                Console.WriteLine("0. Выход");
+                Console.Write("Выбор: ");
 
-                double price;
-                while (true)
+                switch (Console.ReadLine())
                 {
-                    Console.Write("Введите цену: ");
-                    if (double.TryParse(Console.ReadLine(), out price) && price >= 0)
-                        break;
-                    Console.WriteLine("Ошибка! Введите неотрицательное число.");
+                    case "1": BasicCalculator(); break;
+                    case "2": DiscountCalculator(); break;   // ← новая строка
+                    case "0": return;
                 }
-
-                double discount;
-                while (true)
-                {
-                    Console.Write("Введите скидку в процентах (0–100): ");
-                    if (double.TryParse(Console.ReadLine(), out discount)
-                        && discount >= 0 && discount <= 100)
-                        break;
-                    Console.WriteLine("Ошибка! Скидка должна быть от 0 до 100.");
-                }
-
-                double result = price * (1 - discount / 100);
-                double saved = price - result;
-
-                Console.WriteLine($"\nЦена:          {price:F2}");
-                Console.WriteLine($"Скидка:        {discount:F2}%");
-                Console.WriteLine($"Экономия:      {saved:F2}");
-                Console.WriteLine($"Цена со скидкой: {result:F2}");
-
-                Console.Write("\nПосчитать ещё раз? (y/n): ");
-                if (Console.ReadLine()?.Trim().ToLower() != "y")
-                    break;
             }
+        }
 
-            Console.WriteLine("До свидания!");
+        static void BasicCalculator()
+        {
+            // ... ваш существующий код ...
+        }
+
+        // ↓↓↓ НОВАЯ ФУНКЦИЯ ↓↓↓
+        static void DiscountCalculator()
+        {
+            Console.Write("Введите цену: ");
+            double price = Convert.ToDouble(Console.ReadLine());
+
+            Console.Write("Введите скидку в процентах: ");
+            double discount = Convert.ToDouble(Console.ReadLine());
+
+            double result = price * (1 - discount / 100);
+            Console.WriteLine($"Цена со скидкой: {result:F2}");
         }
     }
 }
